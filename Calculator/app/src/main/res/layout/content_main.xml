@@ -24,7 +24,7 @@
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/secoundElementTextView"
+                android:id="@+id/secondElementTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
