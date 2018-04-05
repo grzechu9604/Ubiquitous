@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -44,10 +45,18 @@ class MainActivity : AppCompatActivity() {
 
     fun updateTextBoxes()
     {
-        inputTextView.text = inputString.toString()
-        firstElementTextView.text = rpnCalculator.GetTopElement()?.toString()
-        secondElementTextView.text = rpnCalculator.GetSecondElement()?.toString()
-        thirdElementTextView.text = rpnCalculator.GetThirdElement()?.toString()
+        updateInputTextBox()
+
+        setTextOfTextView(firstElementTextView, rpnCalculator.GetTopElement())
+        setTextOfTextView(secondElementTextView, rpnCalculator.GetSecondElement())
+        setTextOfTextView(thirdElementTextView, rpnCalculator.GetThirdElement())
+    }
+
+    fun setTextOfTextView(tv : TextView, o : Double?) {
+        if (o != null)
+            tv.text = o.toString()
+        else
+            tv.text = ""
     }
 
     fun updateInputTextBox()
@@ -55,125 +64,135 @@ class MainActivity : AppCompatActivity() {
         inputTextView.text = inputString.toString()
     }
 
-    fun onEnterClick(v : View)
+    fun onEnterClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         rpnCalculator.Enter(inputString.toString())
+        inputString.clear()
         updateTextBoxes()
     }
 
-    fun onSwapClick(v : View)
+    fun onSwapClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
+        inputString.clear()
         rpnCalculator.SwapTop()
         updateTextBoxes()
     }
 
-    fun onDropClick(v : View)
+    fun onDropClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
+        inputString.clear()
         rpnCalculator.DropTop()
         updateTextBoxes()
     }
 
-    fun onClearAllClick(v : View)
+    fun onClearAllClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
+        inputString.clear()
         rpnCalculator.ClearAll()
         updateTextBoxes()
     }
 
 
-    fun onSqrtClick(v : View)
+    fun onSqrtClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
+        inputString.clear()
         rpnCalculator.Sqrt()
         updateTextBoxes()
     }
 
 
-    fun onPowClick(v : View)
+    fun onPowClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
+        inputString.clear()
         rpnCalculator.Pow()
         updateTextBoxes()
     }
 
 
-    fun onDivideClick(v : View)
+    fun onDivideClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
+        inputString.clear()
         rpnCalculator.Divide()
         updateTextBoxes()
     }
 
-    fun onDiffrenceClick(v : View)
+    fun onDifferenceClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
+        inputString.clear()
         rpnCalculator.Diffrence()
         updateTextBoxes()
     }
 
-    fun onMultiplyClick(v : View)
+    fun onMultiplyClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
+        inputString.clear()
         rpnCalculator.Multiply()
         updateTextBoxes()
     }
 
-    fun onSumClick(v : View)
+    fun onSumClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
+        inputString.clear()
         rpnCalculator.Sum()
         updateTextBoxes()
     }
 
-    fun onOneClick(v : View)
+    fun onOneClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('1')
     }
 
-    fun onTwoClick(v : View)
+    fun onTwoClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('2')
     }
 
-    fun onThreeClick(v : View)
+    fun onThreeClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('3')
     }
 
-    fun onFourClick(v : View)
+    fun onFourClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('4')
     }
 
-    fun onFiveClick(v : View)
+    fun onFiveClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('5')
     }
 
-    fun onSixClick(v : View)
+    fun onSixClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('6')
     }
 
-    fun onSevenClick(v : View)
+    fun onSevenClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('7')
     }
 
-    fun onEightClick(v : View)
+    fun onEightClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('8')
     }
 
-    fun onNineClick(v : View)
+    fun onNineClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('9')
     }
 
-    fun onZeroClick(v : View)
+    fun onZeroClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('0')
     }
 
-    fun onCommaClick(v : View)
+    fun onCommaClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         numberClicked('.')
     }
 
-    fun onEraseClick(v : View)
+    fun onEraseClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         inputString.deleteLast()
         updateInputTextBox()

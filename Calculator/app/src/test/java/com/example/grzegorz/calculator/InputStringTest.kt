@@ -46,4 +46,14 @@ class InputStringTest {
         Assert.assertEquals(0.8, input.toDouble())
         Assert.assertEquals("0.8", input.toString())
     }
+
+    @Test
+    fun MultiCommaAddTest() {
+        input.addChar('.')
+        input.addChar('7')
+        input.addChar('.')
+        input.addChar('8')
+        Assert.assertEquals("0.78", input.toString())
+        Assert.assertEquals(0.78, input.toDouble())
+    }
 }

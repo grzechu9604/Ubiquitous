@@ -6,9 +6,6 @@ import java.lang.Math as nativeMath
  * Created by Grzegorz on 2018-04-03.
  */
 class RPNCalculator {
-    constructor()
-    {
-    }
 
     fun GetTopElement()
     : Double? {
@@ -37,7 +34,7 @@ class RPNCalculator {
     fun SwapTop() {
         if (stack.size > 1)
         {
-            var top : Double  = stack[0]
+            val top : Double  = stack[0]
             stack[0] = stack[1]
             stack[1] = top
         }
@@ -49,7 +46,7 @@ class RPNCalculator {
     }
 
     fun Sum() {
-        if (stack.size > 2)
+        if (stack.size > 1)
         {
             stack[1] = stack[0] + stack[1]
             DropTop()
@@ -57,7 +54,7 @@ class RPNCalculator {
     }
 
     fun Diffrence() {
-        if (stack.size > 2)
+        if (stack.size > 1)
         {
             stack[1] = stack[0] - stack[1]
             DropTop()
@@ -65,7 +62,7 @@ class RPNCalculator {
     }
 
     fun Multiply() {
-        if (stack.size > 2)
+        if (stack.size > 1)
         {
             stack[1] = stack[0] * stack[1]
             DropTop()
@@ -73,7 +70,7 @@ class RPNCalculator {
     }
 
     fun Divide() {
-        if (stack.size > 2)
+        if (stack.size > 1)
         {
             stack[1] = stack[0] / stack[1]
             DropTop()
@@ -81,7 +78,7 @@ class RPNCalculator {
     }
 
     fun Pow() {
-        if (stack.size > 2)
+        if (stack.size > 1)
         {
             stack[1] = nativeMath.pow(stack[0], stack[1])
             DropTop()
@@ -89,7 +86,7 @@ class RPNCalculator {
     }
 
     fun Sqrt() {
-        if (stack.size > 2)
+        if (stack.size > 0)
         {
             stack[0] = nativeMath.sqrt(stack[0])
         }

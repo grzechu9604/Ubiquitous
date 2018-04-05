@@ -2,7 +2,6 @@ package com.example.grzegorz.calculator
 
 import org.junit.Assert
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 
 /**
@@ -116,5 +115,28 @@ class RPNCalculatorTest {
     fun EmptyEnterTest() {
         calculator.Enter("")
         Assert.assertEquals(3.0, calculator.GetTopElement())
+    }
+
+    @Test
+    fun MultiSumTest(){
+        calculator.Sum()
+        calculator.Sum()
+        Assert.assertEquals(6.0, calculator.GetTopElement())
+        Assert.assertEquals(null, calculator.GetSecondElement())
+        Assert.assertEquals(null, calculator.GetThirdElement())
+    }
+
+    @Test
+    fun MultiSumAndAddElementAndSumTest(){
+        calculator.Sum()
+        calculator.Sum()
+        Assert.assertEquals(6.0, calculator.GetTopElement())
+        Assert.assertEquals(null, calculator.GetSecondElement())
+        Assert.assertEquals(null, calculator.GetThirdElement())
+        calculator.Enter(9.0)
+        calculator.Sum()
+        Assert.assertEquals(15.0, calculator.GetTopElement())
+        Assert.assertEquals(null, calculator.GetSecondElement())
+        Assert.assertEquals(null, calculator.GetThirdElement())
     }
 }

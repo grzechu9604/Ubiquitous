@@ -28,6 +28,12 @@ class InputString {
         }
     }
 
+    fun clear()
+    {
+        value = ""
+        hasComma = false
+    }
+
     fun addChar(c : Char)
     {
         if ( c == '.' || c == ',')
@@ -42,6 +48,7 @@ class InputString {
              {
                  value += "."
              }
+                hasComma = true
             }
         }
         else {
