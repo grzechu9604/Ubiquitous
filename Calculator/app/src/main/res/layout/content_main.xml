@@ -277,18 +277,19 @@
                     android:text="erase" />
 
                 <Button
-                    android:id="@+id/tempButton"
+                    android:id="@+id/plusMinusButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="tmp" />
+                    android:onClick="onPlusMinusClick"
+                    android:text="+/-" />
 
                 <Button
-                    android:id="@+id/tempButton2"
+                    android:id="@+id/undoButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="tmp" />
+                    android:text="undo" />
             </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>

@@ -66,7 +66,12 @@ class MainActivity : AppCompatActivity() {
 
     fun onEnterClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
-        rpnCalculator.Enter(inputString.toString())
+        val insertedValue = inputString.toString()
+        if (insertedValue.isNotEmpty())
+            rpnCalculator.Enter(inputString.toString())
+        else
+            rpnCalculator.AddTopElementAgain()
+
         inputString.clear()
         updateTextBoxes()
     }
@@ -195,6 +200,12 @@ class MainActivity : AppCompatActivity() {
     fun onEraseClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         inputString.deleteLast()
+        updateInputTextBox()
+    }
+
+    fun onPlusMinusClick(@Suppress("UNUSED_PARAMETER")v : View)
+    {
+        rpnCalculator.ChangeSignOfTopElement()
         updateInputTextBox()
     }
 

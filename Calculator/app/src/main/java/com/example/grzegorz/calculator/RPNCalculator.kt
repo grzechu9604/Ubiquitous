@@ -9,7 +9,7 @@ class RPNCalculator {
 
     fun GetTopElement()
     : Double? {
-        if (stack.size > 0)
+        if (stack.any())
             return stack[0]
         else
             return null
@@ -41,7 +41,7 @@ class RPNCalculator {
     }
 
     fun DropTop() {
-        if (stack.size > 0)
+        if (stack.any())
             stack.removeAt(0)
     }
 
@@ -86,7 +86,7 @@ class RPNCalculator {
     }
 
     fun Sqrt() {
-        if (stack.size > 0)
+        if (stack.any())
         {
             stack[0] = nativeMath.sqrt(stack[0])
         }
@@ -107,6 +107,22 @@ class RPNCalculator {
     fun ClearAll()
     {
         stack.clear()
+    }
+
+    fun AddTopElementAgain()
+    {
+        if (stack.any())
+        {
+            Enter(stack[0])
+        }
+    }
+
+    fun ChangeSignOfTopElement()
+    {
+        if (stack.any())
+        {
+            stack[0] = -stack[0]
+        }
     }
 
     private var stack : ArrayList<Double> = ArrayList()

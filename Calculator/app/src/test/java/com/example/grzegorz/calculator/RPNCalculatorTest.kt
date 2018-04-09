@@ -139,4 +139,37 @@ class RPNCalculatorTest {
         Assert.assertEquals(null, calculator.GetSecondElement())
         Assert.assertEquals(null, calculator.GetThirdElement())
     }
+
+    @Test
+    fun AddTopElementAgainTest()
+    {
+        calculator.AddTopElementAgain()
+        Assert.assertEquals(3.0, calculator.GetTopElement())
+        Assert.assertEquals(3.0, calculator.GetSecondElement())
+        Assert.assertEquals(2.0, calculator.GetThirdElement())
+    }
+
+    @Test
+    fun ChangeSignTest()
+    {
+        calculator.ChangeSignOfTopElement()
+        Assert.assertEquals(-3.0, calculator.GetTopElement())
+        Assert.assertEquals(2.0, calculator.GetSecondElement())
+        Assert.assertEquals(1.0, calculator.GetThirdElement())
+
+        calculator.ChangeSignOfTopElement()
+        Assert.assertEquals(3.0, calculator.GetTopElement())
+        Assert.assertEquals(2.0, calculator.GetSecondElement())
+        Assert.assertEquals(1.0, calculator.GetThirdElement())
+
+        calculator.ChangeSignOfTopElement()
+        Assert.assertEquals(-3.0, calculator.GetTopElement())
+        Assert.assertEquals(2.0, calculator.GetSecondElement())
+        Assert.assertEquals(1.0, calculator.GetThirdElement())
+
+        calculator.ChangeSignOfTopElement()
+        Assert.assertEquals(3.0, calculator.GetTopElement())
+        Assert.assertEquals(2.0, calculator.GetSecondElement())
+        Assert.assertEquals(1.0, calculator.GetThirdElement())
+    }
 }
