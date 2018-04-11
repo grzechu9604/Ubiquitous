@@ -34,6 +34,8 @@ class RPNCalculator {
     fun SwapTop() {
         if (stack.size > 1)
         {
+            PrepareDataForUndoing(CalculatorOperations.SwapTop, 2)
+
             val top : Double  = stack[0]
             stack[0] = stack[1]
             stack[1] = top
@@ -42,58 +44,75 @@ class RPNCalculator {
 
     fun DropTop() {
         if (stack.any())
-            stack.removeAt(0)
+        {
+            PrepareDataForUndoing(CalculatorOperations.DropTop, 1)
+            deleteTop()
+        }
     }
 
     fun Sum() {
         if (stack.size > 1)
         {
+            PrepareDataForUndoing(CalculatorOperations.Sum, 2)
+
             stack[1] = stack[0] + stack[1]
-            DropTop()
+            deleteTop()
         }
     }
 
-    fun Diffrence() {
+    fun Difference() {
         if (stack.size > 1)
         {
+            PrepareDataForUndoing(CalculatorOperations.Difference, 2)
+
             stack[1] = stack[0] - stack[1]
-            DropTop()
+            deleteTop()
         }
     }
 
     fun Multiply() {
         if (stack.size > 1)
         {
+            PrepareDataForUndoing(CalculatorOperations.Multiply, 2)
+
             stack[1] = stack[0] * stack[1]
-            DropTop()
+            deleteTop()
         }
     }
 
     fun Divide() {
         if (stack.size > 1)
         {
+            PrepareDataForUndoing(CalculatorOperations.Divide, 2)
+
             stack[1] = stack[0] / stack[1]
-            DropTop()
+            deleteTop()
         }
     }
 
     fun Pow() {
         if (stack.size > 1)
         {
+            PrepareDataForUndoing(CalculatorOperations.Pow, 2)
+
             stack[1] = nativeMath.pow(stack[0], stack[1])
-            DropTop()
+            deleteTop()
         }
     }
 
     fun Sqrt() {
         if (stack.any())
         {
+            PrepareDataForUndoing(CalculatorOperations.Sqrt, 1)
+
             stack[0] = nativeMath.sqrt(stack[0])
         }
     }
 
     fun Enter(value : String)
     {
+        PrepareDataForUndoing(CalculatorOperations.Enter, 0)
+
         val doubleValue = value.toDoubleOrNull()
         if (doubleValue != null)
             Enter(doubleValue)
@@ -101,11 +120,14 @@ class RPNCalculator {
 
     fun Enter(value : Double)
     {
+        PrepareDataForUndoing(CalculatorOperations.Enter, 0)
         stack.add(0, value)
     }
 
     fun ClearAll()
     {
+        lastOperation = CalculatorOperations.NULL
+        undoStack.clear()
         stack.clear()
     }
 
@@ -113,6 +135,8 @@ class RPNCalculator {
     {
         if (stack.any())
         {
+            PrepareDataForUndoing(CalculatorOperations.AddTopElementAgain, 0)
+
             Enter(stack[0])
         }
     }
@@ -121,9 +145,61 @@ class RPNCalculator {
     {
         if (stack.any())
         {
+            PrepareDataForUndoing(CalculatorOperations.ChangeSignOfTopElement, 0)
+
             stack[0] = -stack[0]
         }
     }
 
+    private fun PrepareDataForUndoing(operation : CalculatorOperations, elementsToStore : Int)
+    {
+        lastOperation = operation
+        undoStack.clear()
+        undoStack.addAll(stack.take(elementsToStore))
+    }
+
+    fun restoreElementsFromUndoStack()
+    {
+        for (e in undoStack.reversed())
+        {
+            stack.add(0, e)
+        }
+    }
+
+    private fun deleteTop()
+    {
+        stack.removeAt(0)
+    }
+
+
+
+    fun Undo()
+    {
+        when (lastOperation)
+        {
+            RPNCalculator.CalculatorOperations.Enter -> deleteTop()
+            RPNCalculator.CalculatorOperations.AddTopElementAgain -> deleteTop()
+            RPNCalculator.CalculatorOperations.ChangeSignOfTopElement -> ChangeSignOfTopElement()
+            RPNCalculator.CalculatorOperations.Sqrt -> { deleteTop(); restoreElementsFromUndoStack() }
+            RPNCalculator.CalculatorOperations.Pow ->  { deleteTop(); restoreElementsFromUndoStack() }
+            RPNCalculator.CalculatorOperations.Divide ->  { deleteTop(); restoreElementsFromUndoStack() }
+            RPNCalculator.CalculatorOperations.Multiply ->  { deleteTop(); restoreElementsFromUndoStack() }
+            RPNCalculator.CalculatorOperations.Difference ->  { deleteTop(); restoreElementsFromUndoStack() }
+            RPNCalculator.CalculatorOperations.DropTop -> { restoreElementsFromUndoStack() }
+            RPNCalculator.CalculatorOperations.SwapTop ->  { deleteTop(); deleteTop(); restoreElementsFromUndoStack() }
+            RPNCalculator.CalculatorOperations.Sum ->  { deleteTop(); restoreElementsFromUndoStack() }
+            else -> { //do nothing
+            }
+        }
+    }
+
+
     private var stack : ArrayList<Double> = ArrayList()
+    private var undoStack : ArrayList<Double> = ArrayList()
+    private var lastOperation : CalculatorOperations = CalculatorOperations.NULL
+
+    enum class CalculatorOperations
+    {
+        NULL, Enter, AddTopElementAgain, ChangeSignOfTopElement, Sqrt, Pow, Divide, Multiply, Difference, DropTop, SwapTop, Sum
+    }
 }

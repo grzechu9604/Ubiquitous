@@ -71,7 +71,7 @@ class RPNCalculatorTest {
 
     @Test
     fun DiffrenceTest() {
-        calculator.Diffrence()
+        calculator.Difference()
         Assert.assertEquals(1.0, calculator.GetTopElement())
         Assert.assertEquals(1.0, calculator.GetSecondElement())
     }
@@ -168,6 +168,46 @@ class RPNCalculatorTest {
         Assert.assertEquals(1.0, calculator.GetThirdElement())
 
         calculator.ChangeSignOfTopElement()
+        Assert.assertEquals(3.0, calculator.GetTopElement())
+        Assert.assertEquals(2.0, calculator.GetSecondElement())
+        Assert.assertEquals(1.0, calculator.GetThirdElement())
+    }
+
+    @Test
+    fun UndoSumTest()
+    {
+        calculator.Sum()
+        calculator.Undo()
+        Assert.assertEquals(3.0, calculator.GetTopElement())
+        Assert.assertEquals(2.0, calculator.GetSecondElement())
+        Assert.assertEquals(1.0, calculator.GetThirdElement())
+    }
+
+    @Test
+    fun UndoDropTest()
+    {
+        calculator.DropTop()
+        calculator.Undo()
+        Assert.assertEquals(3.0, calculator.GetTopElement())
+        Assert.assertEquals(2.0, calculator.GetSecondElement())
+        Assert.assertEquals(1.0, calculator.GetThirdElement())
+    }
+
+    @Test
+    fun UndoSwapTest()
+    {
+        calculator.SwapTop()
+        calculator.Undo()
+        Assert.assertEquals(3.0, calculator.GetTopElement())
+        Assert.assertEquals(2.0, calculator.GetSecondElement())
+        Assert.assertEquals(1.0, calculator.GetThirdElement())
+    }
+
+    @Test
+    fun UndoSqrtTest()
+    {
+        calculator.Sqrt()
+        calculator.Undo()
         Assert.assertEquals(3.0, calculator.GetTopElement())
         Assert.assertEquals(2.0, calculator.GetSecondElement())
         Assert.assertEquals(1.0, calculator.GetThirdElement())

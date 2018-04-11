@@ -18,11 +18,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -124,7 +122,7 @@ class MainActivity : AppCompatActivity() {
     fun onDifferenceClick(@Suppress("UNUSED_PARAMETER")v : View)
     {
         inputString.clear()
-        rpnCalculator.Diffrence()
+        rpnCalculator.Difference()
         updateTextBoxes()
     }
 
@@ -207,6 +205,12 @@ class MainActivity : AppCompatActivity() {
     {
         rpnCalculator.ChangeSignOfTopElement()
         updateInputTextBox()
+    }
+
+    fun onUndoClick(@Suppress("UNUSED_PARAMETER")v : View)
+    {
+        rpnCalculator.Undo()
+        updateTextBoxes()
     }
 
     private fun numberClicked(c : Char)
