@@ -6,19 +6,23 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.grzegorz.calculator.MainActivity"
-    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteY="73dp"
     tools:showIn="@layout/activity_main">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout5"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/coordinatorLayout6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,11 +59,10 @@
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout6"
         android:layout_width="0dp"
-        android:layout_height="420dp"
-        android:layout_marginTop="152dp"
+        android:layout_height="530dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/coordinatorLayout5"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -78,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="onOneClick"
-                    android:text="1"/>
+                    android:text="1" />
 
                 <Button
                     android:id="@+id/twoButton"
@@ -292,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="undo"
-                    android:onClick="onUndoClick" />
+                    android:onClick="onUndoClick"/>
             </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
