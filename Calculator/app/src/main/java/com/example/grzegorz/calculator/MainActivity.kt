@@ -1,12 +1,15 @@
 package com.example.grzegorz.calculator
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,17 +17,54 @@ import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private var precision = 3
+    private var buttonsColor = android.graphics.Color.RED
+    private var stackColor = android.graphics.Color.RED
+
+    private var stackTextViews : ArrayList<TextView> = ArrayList()
+
     private val calculatorStackKey = "Calculator.Stack"
     private val calculatorUndoStackKey = "Calculator.UndoStack"
     private val calculatorLastOperationKey = "Calculator.LastOperation"
     private val inputHasCommaKey = "Input.HasComma"
     private val inputStringKey = "Input.String"
+    private val precisionKey = "Precision"
+    private val buttonsColorKey = "ButtonsColor"
+    private val stackColorKey = "StackColor"
+
+    private val REQUEST_CODE = 1
+
+    private fun updateColors()
+    {
+        buttonsLayout.setBackgroundColor(buttonsColor)
+        stackTextViews.forEach { textView -> textView.setBackgroundColor(stackColor)}
+    }
+
+    private fun initializeArrays()
+    {
+        stackTextViews = ArrayList()
+
+        stackTextViews.add(thirdElementTextView)
+        stackTextViews.add(secondElementTextView)
+        stackTextViews.add(firstElementTextView)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        initializeArrays()
+        updateColors()
+        updateTextBoxes()
+    }
 
+    private fun toStringWithPrecision(value : Double?) : String
+    {
+        if (value == null)
+            return ""
+
+        return String.format("%.${precision}f", value)
     }
 
     private fun CovertToFloatArray(list : ArrayList<Double>) : FloatArray
@@ -49,6 +89,9 @@ class MainActivity : AppCompatActivity() {
         outState.putInt(calculatorLastOperationKey, rpnCalculator.lastOperation.ordinal)
         outState.putBoolean(inputHasCommaKey, inputString.hasComma)
         outState.putString(inputStringKey, inputString.value)
+        outState.putInt(precisionKey, precision)
+        outState.putInt(stackColorKey, stackColor)
+        outState.putInt(buttonsColorKey, buttonsColor)
 
         super.onSaveInstanceState(outState)
     }
@@ -64,6 +107,29 @@ class MainActivity : AppCompatActivity() {
         inputString.value = savedInstanceState.getString(inputStringKey)
         inputString.hasComma = savedInstanceState.getBoolean(inputHasCommaKey)
 
+        precision = savedInstanceState.getInt(precisionKey)
+        stackColor = savedInstanceState.getInt(stackColorKey)
+        buttonsColor = savedInstanceState.getInt(buttonsColorKey)
+
+        initializeArrays()
+        updateColors()
+        updateTextBoxes()
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (data !=  null)
+        {
+            if (data.hasExtra(precisionKey))
+                precision = data.getIntExtra(precisionKey,-1)
+
+            if (data.hasExtra(buttonsColorKey))
+                buttonsColor = data.getIntExtra(buttonsColorKey,-1)
+
+            if (data.hasExtra(precisionKey))
+                stackColor = data.getIntExtra(stackColorKey,-1)
+        }
+
+        updateColors()
         updateTextBoxes()
     }
 
@@ -79,13 +145,22 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+
+                intent.putExtra(stackColorKey, stackColor)
+                intent.putExtra(buttonsColorKey, buttonsColor)
+                intent.putExtra(precisionKey, precision)
+
+                startActivityForResult(intent, REQUEST_CODE)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    var rpnCalculator : RPNCalculator = RPNCalculator()
-    var inputString : InputString = InputString()
+    private var rpnCalculator : RPNCalculator = RPNCalculator()
+    private var inputString : InputString = InputString()
 
     fun updateTextBoxes()
     {
@@ -98,7 +173,7 @@ class MainActivity : AppCompatActivity() {
 
     fun setTextOfTextView(tv : TextView, o : Double?) {
         if (o != null)
-            tv.text = o.toString()
+            tv.text = toStringWithPrecision(o)
         else
             tv.text = ""
     }

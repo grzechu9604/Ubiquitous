@@ -14,13 +14,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginLeft="6dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="10dp"
         android:layout_marginStart="6dp"
         android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/coordinatorLayout6"
+        app:layout_constraintEnd_toStartOf="@+id/buttonsLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -57,10 +57,12 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout6"
+        android:id="@+id/buttonsLayout"
         android:layout_width="0dp"
-        android:layout_height="530dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="400dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/coordinatorLayout5"
         app:layout_constraintTop_toTopOf="parent">
@@ -122,7 +124,7 @@
                     android:text="4" />
 
                 <Button
-                    android:id="@+id/fiveButon"
+                    android:id="@+id/fiveButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -138,7 +140,7 @@
                     android:text="6" />
 
                 <Button
-                    android:id="@+id/diffrenceButton"
+                    android:id="@+id/differenceButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -236,7 +238,7 @@
                     android:text="drop" />
 
                 <Button
-                    android:id="@+id/swapButon"
+                    android:id="@+id/swapButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -294,8 +296,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="undo"
-                    android:onClick="onUndoClick"/>
+                    android:onClick="onUndoClick"
+                    android:text="undo" />
             </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
