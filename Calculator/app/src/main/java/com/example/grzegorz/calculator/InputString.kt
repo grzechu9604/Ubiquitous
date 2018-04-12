@@ -3,9 +3,9 @@ package com.example.grzegorz.calculator
 /**
  * Created by Grzegorz on 2018-04-03.
  */
-class InputString {
-    private var value : String = ""
-    private var hasComma : Boolean = false
+class InputString  {
+    var value : String = ""
+    var hasComma : Boolean = false
 
     fun toDouble() : Double?
     {

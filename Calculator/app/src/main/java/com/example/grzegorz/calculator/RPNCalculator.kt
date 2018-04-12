@@ -5,7 +5,7 @@ import java.lang.Math as nativeMath
 /**
  * Created by Grzegorz on 2018-04-03.
  */
-class RPNCalculator {
+class RPNCalculator  {
 
     fun GetTopElement()
     : Double? {
@@ -193,10 +193,32 @@ class RPNCalculator {
         }
     }
 
+    fun restoreData(newStack : FloatArray, newUndoStack : FloatArray, newLastOp : Int)
+    {
+        stack = convert(newStack)
+        undoStack = convert(newUndoStack)
+        lastOperation = CalculatorOperations.values()[newLastOp]
+    }
 
-    private var stack : ArrayList<Double> = ArrayList()
-    private var undoStack : ArrayList<Double> = ArrayList()
-    private var lastOperation : CalculatorOperations = CalculatorOperations.NULL
+    private fun convert(array : FloatArray) : ArrayList<Double>
+    {
+        val arrayList : ArrayList<Double> = ArrayList<Double>()
+        array.forEach { element -> arrayList.add(element.toDouble()) }
+        return arrayList
+    }
+
+    var stack : ArrayList<Double> = ArrayList()
+        private set(value) {
+            field = value
+        }
+    var undoStack : ArrayList<Double> = ArrayList()
+        private set(value) {
+            field = value
+        }
+    var lastOperation : CalculatorOperations = CalculatorOperations.NULL
+        private set(value) {
+            field = value
+        }
 
     enum class CalculatorOperations
     {

@@ -1,5 +1,6 @@
 package com.example.grzegorz.calculator
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -13,6 +14,12 @@ import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val calculatorStackKey = "Calculator.Stack"
+    private val calculatorUndoStackKey = "Calculator.UndoStack"
+    private val calculatorLastOperationKey = "Calculator.LastOperation"
+    private val inputHasCommaKey = "Input.HasComma"
+    private val inputStringKey = "Input.String"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -20,6 +27,45 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun CovertToFloatArray(list : ArrayList<Double>) : FloatArray
+    {
+        val floats : FloatArray = FloatArray(list.size)
+        var i = 0
+        for (element : Double in list)
+        {
+            floats[i++] = element.toFloat()
+        }
+
+        return floats
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+
+        val calculatorStack = CovertToFloatArray(rpnCalculator.stack)
+        val calculatorUndoStack = CovertToFloatArray(rpnCalculator.undoStack)
+
+        outState.putFloatArray(calculatorStackKey, calculatorStack)
+        outState.putFloatArray(calculatorUndoStackKey, calculatorUndoStack)
+        outState.putInt(calculatorLastOperationKey, rpnCalculator.lastOperation.ordinal)
+        outState.putBoolean(inputHasCommaKey, inputString.hasComma)
+        outState.putString(inputStringKey, inputString.value)
+
+        super.onSaveInstanceState(outState)
+    }
+
+    public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        rpnCalculator.restoreData(
+                savedInstanceState.getFloatArray(calculatorStackKey),
+                savedInstanceState.getFloatArray(calculatorUndoStackKey),
+                savedInstanceState.getInt(calculatorLastOperationKey))
+
+        inputString.value = savedInstanceState.getString(inputStringKey)
+        inputString.hasComma = savedInstanceState.getBoolean(inputHasCommaKey)
+
+        updateTextBoxes()
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -38,8 +84,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    val rpnCalculator : RPNCalculator = RPNCalculator()
-    val inputString : InputString = InputString()
+    var rpnCalculator : RPNCalculator = RPNCalculator()
+    var inputString : InputString = InputString()
 
     fun updateTextBoxes()
     {
@@ -218,6 +264,7 @@ class MainActivity : AppCompatActivity() {
         inputString.addChar(c)
         updateInputTextBox()
     }
+
 
 
 
