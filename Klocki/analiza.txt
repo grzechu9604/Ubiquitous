@@ -1,0 +1,35 @@
+Na main activity
+	Lista proejktów
+	pokazuje listę projektów
+	checkbox - pokaż zarchiwizowane
+	URL do xmla - część głowna w Settingu
+	
+Activity new proejkt
+	textbox - nazwa pliku xml zawierający klocki
+
+Projekt
+	Eksport brakujacych kolcków do XML (SD, dysk sieciowy, mail (?))
+	Lista klocków +/- - jak jest wystarczająca ilość - podświetl innym kolorem
+	jeżeli starczy czasu -> wywalanie na koniec tych które są w odpowiedzniej ilości
+	
+List klocków wszystkich
+	dodaj klocek +/-
+	
+Wymagane zgody
+	-Storage Acces
+	
+	
+	
+	Inventory
+		List<Item>
+		
+	Item 
+		ItemType string
+		ItemId string
+		QTY long
+		Color long
+		Extra string
+		Alternate stringMatchid boolean
+		COUNTERPART - string
+		
+		Baza danych
