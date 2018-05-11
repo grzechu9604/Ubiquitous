@@ -16,8 +16,10 @@ import android.support.v4.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
-    private val AddNewProjectResult = 1001
-    private val UrlParameter = "URL_PARAMETER"
+    private val ADD_NEW_PROJECT_CODE = 1
+    private val SETTING_REQUEST_CODE = 2
+    private val urlParameter = "URL_PARAMETER"
+    private val requestCodeParameter = "REQUEST_CODE_PARAMETER"
 
     private var urlString : String = "http://fcds.cs.put.poznan.pl/MyWeb/BL/"
 
@@ -34,15 +36,33 @@ class MainActivity : AppCompatActivity() {
 
     fun addNewProjectButtonClick(v:View)
     {
-        val intent = Intent(this, NewProjectActivity::class.java)
+        startActivityWithUrl(NewProjectActivity::class.java, ADD_NEW_PROJECT_CODE)
+    }
 
-        intent.putExtra(UrlParameter, urlString)
+    private fun startSettingsActivity()
+    {
+        startActivityWithUrl(SettingActivity::class.java, SETTING_REQUEST_CODE)
+    }
 
-        startActivityForResult(intent, AddNewProjectResult)
+    private fun startActivityWithUrl(activityToStart : Class<*>, requestCode : Int)
+    {
+        val intent = Intent(this, activityToStart)
+
+        intent.putExtra(urlParameter, urlString)
+        intent.putExtra(requestCodeParameter, requestCode)
+
+        startActivityForResult(intent, requestCode)
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        if (data != null && requestCode == SETTING_REQUEST_CODE)
+        {
+            urlString = data.getStringExtra(urlParameter)
+        }
+        else
+        {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +83,10 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                startSettingsActivity()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -12,10 +12,11 @@ import java.net.URL
 
 class NewProjectActivity : AppCompatActivity() {
 
+    private var requestCode : Int = -1
+    private val requestCodeParameter = "REQUEST_CODE_PARAMETER"
+    private val urlParameter = "URL_PARAMETER"
 
-    private var urlPrefix : String? = String()
-    private val AddNewProjectResult = 1001
-    private val UrlParameter = "URL_PARAMETER"
+    private var urlPrefix : String = ""
     private val projectParameter = "PROJECT_PARAMETER"
     private val extension = ".xml"
     private var newProject : Project = Project()
@@ -28,25 +29,27 @@ class NewProjectActivity : AppCompatActivity() {
         val d = Downloader(prepareLink())
         d.execute()
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_project)
 
-        urlPrefix = intent.getStringExtra(UrlParameter)
+        urlPrefix = intent.getStringExtra(urlParameter)
+        requestCode = intent.getIntExtra(requestCodeParameter, -1)
     }
 
     override fun finish() {
         val resultData = Intent()
         resultData.putExtra(projectParameter, newProject)
-        setResult(AddNewProjectResult, resultData)
+        setResult(requestCode, resultData)
 
         super.finish()
     }
 
     private inner class Downloader(urlPath: String) : AsyncTask<String, Int, String>(){
-        private var path : String
+        private var path : String = ""
         var downloadedFile : String? = null
+
         init {
             path = urlPath
         }
