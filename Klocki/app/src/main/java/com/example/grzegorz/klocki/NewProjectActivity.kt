@@ -5,10 +5,14 @@ import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.example.grzegorz.klocki.DataTypes.Inventory
+import com.example.grzegorz.klocki.DataTypes.Item
 import com.example.grzegorz.klocki.DataTypes.Project
 import kotlinx.android.synthetic.main.activity_new_project.*
+import org.xmlpull.v1.XmlSerializer
 import java.net.HttpURLConnection
 import java.net.URL
+import org.simpleframework.xml.core.Persister
 
 class NewProjectActivity : AppCompatActivity() {
 
@@ -19,7 +23,8 @@ class NewProjectActivity : AppCompatActivity() {
     private var urlPrefix : String = ""
     private val projectParameter = "PROJECT_PARAMETER"
     private val extension = ".xml"
-    private var newProject : Project = Project()
+    var newProject : Project = Project()
+    var invenory : Inventory = Inventory()
 
     private fun prepareLink() : String{
         return urlPrefix + fileNameBox.text + extension
@@ -54,6 +59,10 @@ class NewProjectActivity : AppCompatActivity() {
             path = urlPath
         }
 
+        override fun onPostExecute(result: String?) {
+
+        }
+
         override fun doInBackground(vararg params: String?): String {
             val url = URL(path)
             val connection = url.openConnection() as HttpURLConnection
@@ -62,7 +71,16 @@ class NewProjectActivity : AppCompatActivity() {
             } finally {
                 connection.disconnect()
             }
+
+            deserializeInventory(downloadedFile.toString())
+
             return downloadedFile.toString()
     }
+
+
+        private fun deserializeInventory(xmlString : String) {
+            val mapper = Persister()
+            invenory = mapper.read(Inventory::class.java, xmlString)
+        }
 }
 }
