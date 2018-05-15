@@ -20,6 +20,7 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
         val COLUMN_CODE = "Code"
         val COLUMN_NAME = "Name"
         val COLUMN_NAMEPL = "NamePL"
+        val COLORS_COLUMNS = arrayOf("id", "Code", "Name", "NamePL")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -28,33 +29,36 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
         }
     }
 
-    fun getDataInventories(): Cursor {
+    private fun getById(id : Int, tableName : String, columnsNames : Array<String>) : Cursor
+    {
         val db = readableDatabase
         val qb = SQLiteQueryBuilder()
-        val sqlSelect = arrayOf("id", "Name", "Active", "LastAccessed")
-        val sqlTables = "Inventories"
-        qb.tables = sqlTables
-        val c = qb.query(db, sqlSelect, null, null, null, null, null)
+        val sqlSelect = columnsNames
+        qb.tables = tableName
+        val selection = "$COLUMN_ID = ? "
+        val selectionParams = arrayOf(id.toString())
+        val c = qb.query(db, sqlSelect, selection, selectionParams, null, null, null)
         c.moveToFirst()
         return c
     }
 
-    fun getColor(id : Int) : Color?
+    fun getColor(id : Int) : Color
     {
-        val query = "Select * from $TABLE_COLORS where $COLUMN_ID = $id"
-        val db = this.writableDatabase
-        val cursor = db.rawQuery(query, null)
-        var color = Color()
+        val c = getById(id, TABLE_COLORS, COLORS_COLUMNS)
+        val color = Color()
 
-        if (cursor.moveToFirst()){
-            val code = Integer.parseInt(cursor.getString(1))
-            val name = cursor.getString(2)
-            val namePL = cursor.getString(3)
-
-            color = Color(id, code, name, namePL)
+        color.id = c.getInt(0)
+        color.code = c.getInt(1)
+        color.name = c.getString(2)
+        if (c.getString(3) != null)
+        {
+            color.namePL = c.getString(3)
+        }
+        else
+        {
+            color.namePL = ""
         }
 
-        db.close()
         return color
     }
 

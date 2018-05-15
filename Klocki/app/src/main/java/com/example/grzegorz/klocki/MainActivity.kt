@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         doPermissionRequest(103, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         val db = KlockiDBHandler(baseContext)
-        val x = db.getDataInventories()
+        val a = db.getColor(2)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
