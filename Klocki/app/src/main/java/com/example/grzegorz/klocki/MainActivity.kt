@@ -13,6 +13,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import com.example.grzegorz.klocki.DataBaseControllers.KlockiDBHandler
 
 class MainActivity : AppCompatActivity() {
 
@@ -69,7 +70,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        doPermissionRequest(1, Manifest.permission.INTERNET)
+        doPermissionRequest(101, Manifest.permission.INTERNET)
+        doPermissionRequest(102, Manifest.permission.READ_EXTERNAL_STORAGE)
+        doPermissionRequest(103, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        val db = KlockiDBHandler(baseContext)
+        val x = db.getDataInventories()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

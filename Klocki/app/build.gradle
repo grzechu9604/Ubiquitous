@@ -8,7 +8,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.grzegorz.klocki"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -34,4 +34,5 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.simpleframework/simple-xml
     implementation group: 'org.simpleframework', name: 'simple-xml', version: '2.7'
+    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
 }
