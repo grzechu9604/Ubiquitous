@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
 
         val db = KlockiDBHandler(baseContext)
         val a = db.getColor(2)
+        val c = db.getCategory(5)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
