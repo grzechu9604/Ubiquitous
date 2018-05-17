@@ -82,6 +82,13 @@ class MainActivity : AppCompatActivity() {
         //val d = db.getInventoriesPart(2)
         val e = db.getItemType(2)
         val f = db.getPart(1)
+
+        val a1 = db.getCategoryByCode(143)
+        val b2 = db.getCodeByCode(4660886)
+        val c2 = db.getColorByCode(41)
+        //val d = db.getInventoriesPart(2)
+        val f2 = db.getPartByCode("30236")
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
