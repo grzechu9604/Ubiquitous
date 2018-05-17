@@ -1,8 +1,9 @@
 package com.example.grzegorz.klocki.DataTypes
 
 import android.database.Cursor
+import com.example.grzegorz.klocki.Interfaces.Colorable
 
-class InventoriesPart() {
+class InventoriesPart() : Colorable {
     constructor(id : Int, inventoryID : Int, typeID : Int, itemID : Int, quantityInSet : Int, quantityInStore : Int, colorID : Int, extra : Int) : this()
     {
         this.id = id
@@ -25,4 +26,9 @@ class InventoriesPart() {
     var quantityInStore : Int = -1
     var colorID : Int = -1
     var extra : Int = -1
+
+    override fun getColor() : Int
+    {
+        return colorID
+    }
 }

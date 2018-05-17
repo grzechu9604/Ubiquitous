@@ -6,6 +6,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper
 import android.database.Cursor
 import android.database.sqlite.SQLiteQueryBuilder
 import com.example.grzegorz.klocki.DataTypes.*
+import com.example.grzegorz.klocki.Interfaces.Colorable
 
 
 class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -128,5 +129,10 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     {
         val c = getByCode(code, TABLE_PARTS, PARTS_COLUMNS)
         return Part(c)
+    }
+
+    fun getColorForColorable(colorable: Colorable) : Color
+    {
+        return getColor(colorable.getColor())
     }
 }

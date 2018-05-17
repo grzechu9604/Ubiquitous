@@ -1,8 +1,9 @@
 package com.example.grzegorz.klocki.DataTypes
 
 import android.database.Cursor
+import com.example.grzegorz.klocki.Interfaces.Colorable
 
-class Code() {
+class Code() : Colorable {
     constructor(id : Int, itemID : Int, colorID : Int, code : Int) : this()
     {
         this.id = id
@@ -17,4 +18,9 @@ class Code() {
     var itemID : Int = -1
     var colorID : Int = -1
     var code : Int = -1
+
+    override fun getColor() : Int
+    {
+        return colorID
+    }
 }

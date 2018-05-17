@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import com.example.grzegorz.klocki.DataTypes.Inventory
 import com.example.grzegorz.klocki.DataTypes.Item
-import com.example.grzegorz.klocki.DataTypes.Project
 import kotlinx.android.synthetic.main.activity_new_project.*
 import org.xmlpull.v1.XmlSerializer
 import java.net.HttpURLConnection
@@ -23,7 +22,6 @@ class NewProjectActivity : AppCompatActivity() {
     private var urlPrefix : String = ""
     private val projectParameter = "PROJECT_PARAMETER"
     private val extension = ".xml"
-    var newProject : Project = Project()
     var invenory : Inventory = Inventory()
 
     private fun prepareLink() : String{
@@ -45,7 +43,6 @@ class NewProjectActivity : AppCompatActivity() {
 
     override fun finish() {
         val resultData = Intent()
-        resultData.putExtra(projectParameter, newProject)
         setResult(requestCode, resultData)
 
         super.finish()
