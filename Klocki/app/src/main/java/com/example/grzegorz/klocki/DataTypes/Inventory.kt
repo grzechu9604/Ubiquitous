@@ -7,4 +7,7 @@ import org.simpleframework.xml.Root
 class Inventory {
     @field:ElementList(entry = "ITEM", inline = true)
     var items : List<Item>? = null
+    var id : Int = -1
+    var name : String = ""
+    var active : Int = -1
 }

@@ -1,5 +1,7 @@
 package com.example.grzegorz.klocki.DataTypes
 
+import android.database.Cursor
+
 class Color() {
     var id : Int = -1
     var code : Int = -1
@@ -12,4 +14,7 @@ class Color() {
         this.name = Name
         this.namePL = NamePL
     }
+
+    constructor(c : Cursor) : this(c.getInt(0), c.getInt(1), c.getString(2), (if (c.getString(3) != null)  c.getString(3) else ""))
+
 }

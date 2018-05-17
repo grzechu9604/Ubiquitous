@@ -2,7 +2,7 @@ package com.example.grzegorz.klocki.DataTypes
 
 import org.simpleframework.xml.Element
 
-class Item() {
+class Item {
     @set:Element(name = "ITEMTYPE")
     @get:Element(name = "ITEMTYPE")
     var itemType : String = ""
