@@ -30,11 +30,7 @@ class MainActivity : AppCompatActivity() {
         if (p != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, arrayOf(permission), reqCode)
     }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
+    
     fun addNewProjectButtonClick(v:View)
     {
         startActivityWithUrl(NewProjectActivity::class.java, ADD_NEW_PROJECT_CODE)
