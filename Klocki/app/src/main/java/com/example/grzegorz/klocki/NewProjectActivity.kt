@@ -5,6 +5,8 @@ import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import com.example.grzegorz.klocki.DataBaseControllers.KlockiDBHandler
 import com.example.grzegorz.klocki.DataTypes.Inventory
 import com.example.grzegorz.klocki.DataTypes.Item
 import kotlinx.android.synthetic.main.activity_new_project.*
@@ -22,7 +24,8 @@ class NewProjectActivity : AppCompatActivity() {
     private var urlPrefix : String = ""
     private val projectParameter = "PROJECT_PARAMETER"
     private val extension = ".xml"
-    var invenory : Inventory = Inventory()
+    private var dbHandler : KlockiDBHandler? = null
+    var inventory : Inventory = Inventory()
 
     private fun prepareLink() : String{
         return urlPrefix + fileNameBox.text + extension
@@ -33,12 +36,36 @@ class NewProjectActivity : AppCompatActivity() {
         d.execute()
     }
 
+    private fun showToastMessage(text : String){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    fun saveProjectButtonClick(v : View){
+        if (inventory.items != null && inventory.items!!.any())
+        {
+            inventory.name = projectNameText.text.toString()
+
+            this.dbHandler?.saveInventoryWitItems(inventory)
+
+            projectNameText.setText("")
+            fileNameBox.setText("")
+
+            showToastMessage("Dodano projekt do bazy")
+        }
+        else
+        {
+            showToastMessage("Zacznij lub poczekaj na zakończenie pobierania")
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_project)
 
         urlPrefix = intent.getStringExtra(urlParameter)
         requestCode = intent.getIntExtra(requestCodeParameter, -1)
+
+        dbHandler = KlockiDBHandler(this)
     }
 
     override fun finish() {
@@ -77,7 +104,7 @@ class NewProjectActivity : AppCompatActivity() {
 
         private fun deserializeInventory(xmlString : String) {
             val mapper = Persister()
-            invenory = mapper.read(Inventory::class.java, xmlString)
+            inventory = mapper.read(Inventory::class.java, xmlString)
         }
 }
 }

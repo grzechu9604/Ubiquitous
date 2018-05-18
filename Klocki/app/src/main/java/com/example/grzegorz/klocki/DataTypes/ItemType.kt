@@ -1,8 +1,9 @@
 package com.example.grzegorz.klocki.DataTypes
 
 import android.database.Cursor
+import com.example.grzegorz.klocki.Interfaces.Translatable
 
-class ItemType() {
+class ItemType() : Translatable {
     constructor(id : Int, code : Int, name : String, namePL : String) : this(){
         this.id = id
         this.code = code
@@ -15,4 +16,9 @@ class ItemType() {
     var code : Int = -1
     var name : String = ""
     var namePL : String = ""
+
+    override fun getTranslatedName() : String
+    {
+        return if (namePL != "") namePL else name
+    }
 }

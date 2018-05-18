@@ -4,31 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewProjectActivity">
+    tools:context=".NewProjectActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <Button
         android:id="@+id/downloadFileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="54dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="36dp"
         android:onClick="downloadFileButtonClick"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Pobierz plik"
+        app:layout_constraintStart_toStartOf="@+id/confirmButton"
+        app:layout_constraintTop_toBottomOf="@+id/projectNameText" />
 
     <EditText
         android:id="@+id/fileNameBox"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="57dp"
+        android:layout_marginTop="39dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintStart_toStartOf="@+id/downloadFileButton"
+        android:text="Wprowadź nazwę pliku XML"
+        app:layout_constraintEnd_toEndOf="@+id/projectNameText"
+        app:layout_constraintStart_toStartOf="@+id/projectNameText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/projectNameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="42dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Wprowadź nazwę projektu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fileNameBox" />
+
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
+        android:onClick="saveProjectButtonClick"
+        android:text="Potwierdź"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/downloadFileButton" />
 
 </android.support.constraint.ConstraintLayout>

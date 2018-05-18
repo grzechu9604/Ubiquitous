@@ -7,6 +7,9 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteQueryBuilder
 import com.example.grzegorz.klocki.DataTypes.*
 import com.example.grzegorz.klocki.Interfaces.Colorable
+import android.content.ContentValues
+
+
 
 
 class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -26,15 +29,27 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
         private const val COLUMN_ID = "id"
         private const val COLUMN_CODE = "Code"
         private const val COLUMN_NAME = "Name"
-        private const val COLUMN_NAMEPL = "NamePL"
+        private const val COLUMN_NAME_PL = "NamePL"
+        private const val COLUMN_COLOR_ID = "ColorID"
+        private const val COLUMN_INVENTORY_ID = "InventoryID"
+        private const val COLUMN_TYPE_ID = "TypeID"
+        private const val COLUMN_ITEM_ID = "ItemID"
+        private const val COLUMN_QUANTITY_IN_SET = "QuantityInSet"
+        private const val COLUMN_QUANTITY_IN_STORE = "QuantityInStore"
+        private const val COLUMN_EXTRA = "Extra"
+        private const val COLUMN_IMAGE = "Image"
+        private const val COLUMN_ACTIVE = "Active"
+        private const val COLUMN_lAST_ACCESSED = "LastAccessed"
+        private const val COLUMN_CATEGORY_ID = "CategoryID"
 
-        private val CATEGORIES_COLUMNS = arrayOf("id", "Code", "Name", "NamePL")
-        private val CODES_COLUMNS = arrayOf("id", "ItemID", "ColorID", "Code", "Image")
-        private val COLORS_COLUMNS = arrayOf("id", "Code", "Name", "NamePL")
-        private val INVENTORIES_COLUMNS = arrayOf("id", "Name", "Active", "LastAccessed")
-        private val INVENTORIESPARTS_COLUMNS = arrayOf("id", "InventoryID", "TypeID", "ItemID", "QuantityInSet", "QuantityInStore", "ColorID", "Extra")
-        private val ITEMTYPES_COLUMNS = arrayOf("id", "Code", "Name", "NamePL")
-        private val PARTS_COLUMNS = arrayOf("id", "TypeID", "Code", "Name", "NamePL", "CategoryID")
+
+        private val CATEGORIES_COLUMNS = arrayOf(COLUMN_ID, COLUMN_CODE, COLUMN_NAME, COLUMN_NAME_PL)
+        private val CODES_COLUMNS = arrayOf(COLUMN_ID, COLUMN_ITEM_ID, COLUMN_COLOR_ID, COLUMN_CODE, COLUMN_IMAGE)
+        private val COLORS_COLUMNS = arrayOf(COLUMN_ID, COLUMN_CODE, COLUMN_NAME, COLUMN_NAME_PL)
+        private val INVENTORIES_COLUMNS = arrayOf(COLUMN_ID, COLUMN_NAME, COLUMN_ACTIVE, COLUMN_lAST_ACCESSED)
+        private val INVENTORIESPARTS_COLUMNS = arrayOf(COLUMN_ID, COLUMN_INVENTORY_ID, COLUMN_TYPE_ID, COLUMN_ITEM_ID, COLUMN_QUANTITY_IN_SET, COLUMN_QUANTITY_IN_STORE, COLUMN_COLOR_ID, COLUMN_EXTRA)
+        private val ITEMTYPES_COLUMNS = arrayOf(COLUMN_ID, COLUMN_CODE, COLUMN_NAME, COLUMN_NAME_PL)
+        private val PARTS_COLUMNS = arrayOf(COLUMN_ID, COLUMN_TYPE_ID, COLUMN_CODE, COLUMN_NAME, COLUMN_NAME_PL, COLUMN_CATEGORY_ID)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -98,7 +113,10 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     fun getCodeByCode(code : Int) : Code
     {
         val c = getByCode(code.toString(), TABLE_CODES, CODES_COLUMNS)
-        return Code(c)
+        if (c.count > 0)
+            return Code(c)
+        else
+            return Code()
     }
 
     fun getInventoriesPart(id : Int) : InventoriesPart
@@ -128,11 +146,72 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     fun getPartByCode(code : String) : Part
     {
         val c = getByCode(code, TABLE_PARTS, PARTS_COLUMNS)
-        return Part(c)
+        if (c.count > 0)
+            return Part(c)
+        else
+            return Part()
     }
 
     fun getColorForColorable(colorable: Colorable) : Color
     {
         return getColor(colorable.getColor())
+    }
+
+    fun getInventory(id : Int) : Inventory
+    {
+        val parts = arrayListOf<Part>()
+        val c = getById(id, TABLE_INVENTORIES, INVENTORIES_COLUMNS)
+        return Inventory(c, parts)
+    }
+
+    fun saveInventoryWitItems(inventory: Inventory)
+    {
+        inventory.id = saveInventory(inventory)
+        for (item in inventory.items!!){
+            InventoriesPart(inventory, item, this)
+        }
+    }
+
+    fun saveInventory(inventory: Inventory) : Int
+    {
+        val values = generateContentValues(inventory)
+        return saveContentToTable(TABLE_INVENTORIES, values)
+    }
+
+    fun saveInventoryPart(inventoriesPart: InventoriesPart) : Int
+    {
+        val values = generateContentValues(inventoriesPart)
+        return saveContentToTable(TABLE_INVENTORIESPARTS, values)
+    }
+
+
+    private fun generateContentValues(inventory: Inventory) : ContentValues {
+        val values = ContentValues()
+
+        values.put(COLUMN_ACTIVE, inventory.active)
+        values.put(COLUMN_NAME, inventory.name)
+        values.put(COLUMN_lAST_ACCESSED, inventory.lastAccessed)
+
+        return values
+    }
+
+        private fun generateContentValues(inventoriesPart: InventoriesPart) : ContentValues
+    {
+        val values = ContentValues()
+
+        values.put(COLUMN_COLOR_ID, inventoriesPart.colorID)
+        values.put(COLUMN_EXTRA, inventoriesPart.extra)
+        values.put(COLUMN_INVENTORY_ID, inventoriesPart.inventoryID)
+        values.put(COLUMN_ITEM_ID, inventoriesPart.itemID)
+        values.put(COLUMN_QUANTITY_IN_SET, inventoriesPart.quantityInSet)
+        values.put(COLUMN_QUANTITY_IN_STORE, inventoriesPart.quantityInStore)
+        values.put(COLUMN_TYPE_ID, inventoriesPart.typeID)
+
+        return values
+    }
+
+    private fun saveContentToTable(tableName : String, contentValues: ContentValues) : Int
+    {
+        return writableDatabase.insert(tableName, null, contentValues).toInt()
     }
 }

@@ -1,8 +1,9 @@
 package com.example.grzegorz.klocki.DataTypes
 
 import android.database.Cursor
+import com.example.grzegorz.klocki.Interfaces.Translatable
 
-class Color() {
+class Color() : Translatable{
     var id : Int = -1
     var code : Int = -1
     var name : String = ""
@@ -17,4 +18,8 @@ class Color() {
 
     constructor(c : Cursor) : this(c.getInt(0), c.getInt(1), c.getString(2), (if (c.getString(3) != null)  c.getString(3) else ""))
 
+    override fun getTranslatedName() : String
+    {
+        return if (namePL != "") namePL else name
+    }
 }

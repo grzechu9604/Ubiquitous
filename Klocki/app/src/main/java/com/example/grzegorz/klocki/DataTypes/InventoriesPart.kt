@@ -1,9 +1,16 @@
 package com.example.grzegorz.klocki.DataTypes
 
 import android.database.Cursor
+import com.example.grzegorz.klocki.DataBaseControllers.KlockiDBHandler
 import com.example.grzegorz.klocki.Interfaces.Colorable
 
 class InventoriesPart() : Colorable {
+    constructor(inventory: Inventory, item : Item, dbHandler: KlockiDBHandler) : this(
+            -2, inventory.id, dbHandler.getItemType(item.itemType).id, dbHandler.getPartByCode(item.itemId).id, 0, item.qty, dbHandler.getColorByCode(item.colorID).id, 0)
+    {
+        id = dbHandler.saveInventoryPart(this)
+    }
+
     constructor(id : Int, inventoryID : Int, typeID : Int, itemID : Int, quantityInSet : Int, quantityInStore : Int, colorID : Int, extra : Int) : this()
     {
         this.id = id

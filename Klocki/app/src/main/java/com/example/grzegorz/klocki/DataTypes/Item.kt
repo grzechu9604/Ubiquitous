@@ -3,7 +3,7 @@ package com.example.grzegorz.klocki.DataTypes
 import com.example.grzegorz.klocki.Interfaces.Colorable
 import org.simpleframework.xml.Element
 
-class Item : Colorable{
+class Item {
     @set:Element(name = "ITEMTYPE")
     @get:Element(name = "ITEMTYPE")
     var itemType : String = ""
@@ -35,9 +35,4 @@ class Item : Colorable{
     @set:Element(name = "COUNTERPART")
     @get:Element(name = "COUNTERPART")
     var counterPart : String = ""
-
-    override fun getColor() : Int
-    {
-        return colorID
-    }
 }

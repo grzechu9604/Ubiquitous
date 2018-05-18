@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     private val urlParameter = "URL_PARAMETER"
     private val requestCodeParameter = "REQUEST_CODE_PARAMETER"
 
+    private var db : KlockiDBHandler? = null
+
     private var urlString : String = "http://fcds.cs.put.poznan.pl/MyWeb/BL/"
 
     private fun doPermissionRequest(reqCode : Int, permission : String) {
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         if (p != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, arrayOf(permission), reqCode)
     }
-    
+
     fun addNewProjectButtonClick(v:View)
     {
         startActivityWithUrl(NewProjectActivity::class.java, ADD_NEW_PROJECT_CODE)
@@ -58,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
         else
         {
+            val inventory = db?.getInventory(1)
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
@@ -70,22 +73,7 @@ class MainActivity : AppCompatActivity() {
         doPermissionRequest(102, Manifest.permission.READ_EXTERNAL_STORAGE)
         doPermissionRequest(103, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-        val db = KlockiDBHandler(baseContext)
-
-        val a = db.getCategory(5)
-        val b = db.getCode(2)
-        val c = db.getColor(2)
-        //val d = db.getInventoriesPart(2)
-        val e = db.getItemType(2)
-        val f = db.getPart(1)
-
-        val a1 = db.getCategoryByCode(143)
-        val b1 = db.getCodeByCode(4660886)
-        val c1 = db.getColorByCode(41)
-        //val d = db.getInventoriesPart(2)
-        val f1 = db.getPartByCode("30236")
-
-        val b2 = db.getColorForColorable(b)
+        db = KlockiDBHandler(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
