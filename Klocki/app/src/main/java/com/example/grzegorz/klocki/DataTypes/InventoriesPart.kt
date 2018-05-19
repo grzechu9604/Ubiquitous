@@ -23,7 +23,8 @@ class InventoriesPart() : Colorable {
         this.extra = extra
     }
 
-    constructor(c : Cursor) : this(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3),c.getInt(4),c.getInt(5),c.getInt(6),c.getInt(7))
+    constructor(c : Cursor)
+            : this(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3),c.getInt(4),c.getInt(5),c.getInt(6),c.getInt(7))
 
     var id : Int = -1
     var inventoryID : Int = -1

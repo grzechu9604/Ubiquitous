@@ -41,6 +41,7 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
         private const val COLUMN_ACTIVE = "Active"
         private const val COLUMN_lAST_ACCESSED = "LastAccessed"
         private const val COLUMN_CATEGORY_ID = "CategoryID"
+        private const val UNARCHIVED_INVENTORY = "1"
 
 
         private val CATEGORIES_COLUMNS = arrayOf(COLUMN_ID, COLUMN_CODE, COLUMN_NAME, COLUMN_NAME_PL)
@@ -53,21 +54,56 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        if (newVersion > oldVersion)
-        {
+        if (newVersion > oldVersion) {
         }
     }
 
-    private fun getByColumnFirstElement(value : String, tableName : String, columnsToSelect : Array<String>, column : String) : Cursor
+    private fun getByColumnFirstElement(value: String, tableName: String, columnsToSelect: Array<String>, column: String): Cursor {
+        val c = getByColumn(value, tableName, columnsToSelect, column)
+        c.moveToFirst()
+        return c
+    }
+
+    private fun appendInventroiesPartToList(c: Cursor, parts: MutableList<InventoriesPart>) {
+        parts.add(InventoriesPart(c))
+    }
+
+    private fun createInventroiesPartToList(c: Cursor): List<InventoriesPart> {
+        val parts = mutableListOf<InventoriesPart>()
+
+        while (c.moveToNext()) {
+            appendInventroiesPartToList(c, parts)
+        }
+
+        return parts
+    }
+
+    private fun createInventroiesList(c: Cursor): List<Inventory> {
+        val inventories = mutableListOf<Inventory>()
+
+        while (c.moveToNext()) {
+            inventories.add(Inventory(c))
+        }
+
+        return inventories
+    }
+
+    private fun getTable(tableName : String, columnsToSelect : Array<String>) : Cursor
+    {
+        val db = readableDatabase
+        val qb = SQLiteQueryBuilder()
+        qb.tables = tableName
+        return qb.query(db, columnsToSelect, null, null, null, null, null)
+    }
+
+    private fun getByColumn(value : String, tableName : String, columnsToSelect : Array<String>, column : String) : Cursor
     {
         val db = readableDatabase
         val qb = SQLiteQueryBuilder()
         qb.tables = tableName
         val selection = "$column = ? "
         val selectionParams = arrayOf(value)
-        val c = qb.query(db, columnsToSelect, selection, selectionParams, null, null, null)
-        c.moveToFirst()
-        return c
+        return qb.query(db, columnsToSelect, selection, selectionParams, null, null, null)
     }
 
     private fun getById(id : Int, tableName : String, columnsNames : Array<String>) : Cursor
@@ -113,10 +149,7 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     fun getCodeByCode(code : Int) : Code
     {
         val c = getByCode(code.toString(), TABLE_CODES, CODES_COLUMNS)
-        if (c.count > 0)
-            return Code(c)
-        else
-            return Code()
+        return Code(c)
     }
 
     fun getInventoriesPart(id : Int) : InventoriesPart
@@ -146,10 +179,7 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     fun getPartByCode(code : String) : Part
     {
         val c = getByCode(code, TABLE_PARTS, PARTS_COLUMNS)
-        if (c.count > 0)
-            return Part(c)
-        else
-            return Part()
+        return Part(c)
     }
 
     fun getColorForColorable(colorable: Colorable) : Color
@@ -159,9 +189,31 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
 
     fun getInventory(id : Int) : Inventory
     {
-        val parts = arrayListOf<Part>()
+        val parts = getInventoriesPartsForInventory(id)
         val c = getById(id, TABLE_INVENTORIES, INVENTORIES_COLUMNS)
         return Inventory(c, parts)
+    }
+
+    private fun getInventoriesPartsByInventoryId(id : Int) : Cursor{
+        return getByColumn(id.toString(), TABLE_INVENTORIESPARTS, INVENTORIESPARTS_COLUMNS, COLUMN_INVENTORY_ID)
+    }
+
+    private fun getInventoriesPartsForInventory(id : Int) : List<InventoriesPart>
+    {
+        val c = getInventoriesPartsByInventoryId(id)
+        return createInventroiesPartToList(c)
+    }
+
+    fun getInventories() : List<Inventory>
+    {
+        val c = getTable(TABLE_INVENTORIES, INVENTORIES_COLUMNS)
+        return createInventroiesList(c)
+    }
+
+    fun getUnarchivedInventories() : List<Inventory>
+    {
+        val c = getByColumn(UNARCHIVED_INVENTORY, TABLE_INVENTORIES, INVENTORIES_COLUMNS, COLUMN_ACTIVE)
+        return createInventroiesList(c)
     }
 
     fun saveInventoryWitItems(inventory: Inventory)
@@ -172,7 +224,7 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
         }
     }
 
-    fun saveInventory(inventory: Inventory) : Int
+    private fun saveInventory(inventory: Inventory) : Int
     {
         val values = generateContentValues(inventory)
         return saveContentToTable(TABLE_INVENTORIES, values)

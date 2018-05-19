@@ -8,13 +8,13 @@ import org.simpleframework.xml.Root
 class Inventory() {
     @field:ElementList(entry = "ITEM", inline = true)
     var items : List<Item>? = null
-    var parts : List<Part>? = null
+    var parts : List<InventoriesPart>? = null
     var id : Int = -1
     var name : String = ""
-    var active : Int = -1
+    var active = 1
     var lastAccessed = -1
 
-    constructor(parts: List<Part>, id : Int, name : String, active : Int, lastAccessed : Int) : this()
+    constructor(parts: List<InventoriesPart>, id : Int, name : String, active : Int, lastAccessed : Int) : this()
     {
         this.parts = parts
         this.id = id
@@ -23,8 +23,7 @@ class Inventory() {
         this.lastAccessed = lastAccessed
     }
 
-    constructor(c : Cursor, parts : List<Part>) : this(parts, c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3))
-        {
-        }
+    constructor(c : Cursor) : this(c, listOf<InventoriesPart>())
 
+    constructor(c : Cursor, parts : List<InventoriesPart>) : this(parts, c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3))
     }

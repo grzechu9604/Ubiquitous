@@ -14,6 +14,8 @@ import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import com.example.grzegorz.klocki.DataBaseControllers.KlockiDBHandler
+import com.example.grzegorz.klocki.DataTypes.Inventory
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +25,9 @@ class MainActivity : AppCompatActivity() {
     private val requestCodeParameter = "REQUEST_CODE_PARAMETER"
 
     private var db : KlockiDBHandler? = null
+    private var inventories : List<Inventory>? = null
+
+    private var showOnlyUnarchivedInventories = true
 
     private var urlString : String = "http://fcds.cs.put.poznan.pl/MyWeb/BL/"
 
@@ -43,6 +48,16 @@ class MainActivity : AppCompatActivity() {
         startActivityWithUrl(SettingActivity::class.java, SETTING_REQUEST_CODE)
     }
 
+    private fun refreshInventoriesList()
+    {
+        inventories = if (showOnlyUnarchivedInventories) db?.getUnarchivedInventories() else db?.getInventories()
+    }
+
+    fun onlyActiveCheckBoxClicked(v:View){
+        showOnlyUnarchivedInventories = onlyActiveCheckBox.isChecked
+        refreshInventoriesList()
+    }
+
     private fun startActivityWithUrl(activityToStart : Class<*>, requestCode : Int)
     {
         val intent = Intent(this, activityToStart)
@@ -60,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
         else
         {
-            val inventory = db?.getInventory(1)
+            refreshInventoriesList()
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
@@ -74,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         doPermissionRequest(103, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         db = KlockiDBHandler(this)
+        refreshInventoriesList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
