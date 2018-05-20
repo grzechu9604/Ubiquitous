@@ -4,30 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InventoryActivity">
+    tools:context=".InventoryActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <Button
         android:id="@+id/confirmButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="41dp"
-        android:layout_marginRight="41dp"
-        android:layout_marginTop="43dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginRight="26dp"
+        android:layout_marginTop="9dp"
         android:text="Zatwierdź"
-        app:layout_constraintBottom_toTopOf="@+id/inventoriesPartsListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/activeCheckBox"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/exportButton" />
 
     <CheckBox
         android:id="@+id/activeCheckBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="17dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="19dp"
+        android:layout_marginEnd="19dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="52dp"
+        android:layout_marginRight="19dp"
         android:layout_marginStart="16dp"
         android:text="Aktywny"
         app:layout_constraintBottom_toTopOf="@+id/inventoriesPartsListView"
@@ -38,16 +37,17 @@
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginLeft="49dp"
-        android:layout_marginRight="68dp"
-        android:layout_marginStart="49dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="23dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="23dp"
         android:text="TextView"
+        android:textSize="17dp"
         app:layout_constraintBottom_toTopOf="@+id/activeCheckBox"
-        app:layout_constraintEnd_toEndOf="@+id/confirmButton"
+        app:layout_constraintEnd_toStartOf="@+id/exportButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,5 +63,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmButton" />
+        app:layout_constraintTop_toBottomOf="@+id/activeCheckBox" />
+
+    <Button
+        android:id="@+id/exportButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Eksportuj"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nameTextView"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

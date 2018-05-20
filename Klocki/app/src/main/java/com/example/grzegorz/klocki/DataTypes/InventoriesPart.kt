@@ -39,4 +39,8 @@ class InventoriesPart() : Colorable {
     {
         return colorID
     }
+
+    fun getText() : String{
+        return quantityInSet.toString() + "/" + quantityInStore.toString()
+    }
 }
