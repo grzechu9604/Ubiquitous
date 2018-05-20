@@ -23,8 +23,10 @@ class MainActivity : AppCompatActivity() {
 
     private val ADD_NEW_PROJECT_CODE = 1
     private val SETTING_REQUEST_CODE = 2
+    private val INVENTORY_REQUEST_CODE = 3
     private val urlParameter = "URL_PARAMETER"
     private val requestCodeParameter = "REQUEST_CODE_PARAMETER"
+    private val inventoryIdParameter = "INVENTORY_ID_PARAMETER"
 
     private var db : KlockiDBHandler? = null
     private var inventories : List<Inventory>? = null
@@ -50,6 +52,16 @@ class MainActivity : AppCompatActivity() {
         startActivityWithUrl(SettingActivity::class.java, SETTING_REQUEST_CODE)
     }
 
+    private fun startInventoryActivity(inventoryId : Int)
+    {
+        val intent = Intent(this, InventoryActivity::class.java)
+
+        intent.putExtra(inventoryIdParameter, inventoryId)
+        intent.putExtra(requestCodeParameter, INVENTORY_REQUEST_CODE)
+
+        startActivityForResult(intent, INVENTORY_REQUEST_CODE)
+    }
+
     private fun refreshInventoriesList()
     {
         inventories = if (showOnlyUnarchivedInventories) db?.getUnarchivedInventories() else db?.getInventories()
@@ -65,10 +77,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         InventoriesListView.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
-    }
-
-    fun listClicked(v:View){
-        val selected = InventoriesListView.checkedItemPosition
     }
 
     fun onlyActiveCheckBoxClicked(v:View){
@@ -111,6 +119,7 @@ class MainActivity : AppCompatActivity() {
 
         InventoriesListView.setOnItemClickListener{_,_,position, _ ->
             val selected = inventories!![position]
+            startInventoryActivity(selected.id)
         }
     }
 
