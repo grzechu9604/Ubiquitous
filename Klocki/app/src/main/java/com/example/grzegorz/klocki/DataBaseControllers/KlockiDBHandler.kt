@@ -58,6 +58,16 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
         }
     }
 
+    private fun updateColumnByColumn(tableName: String, contentValues: ContentValues, columnName : String, value : String){
+        val selection = "$columnName = ? "
+        writableDatabase.update(tableName, contentValues, selection, arrayOf(value))
+    }
+
+    fun updateInventory(inventory: Inventory){
+        val content = generateContentValues(inventory)
+        updateColumnByColumn(TABLE_INVENTORIES, content, COLUMN_ID, inventory.id.toString())
+    }
+
     private fun getByColumnFirstElement(value: String, tableName: String, columnsToSelect: Array<String>, column: String): Cursor {
         val c = getByColumn(value, tableName, columnsToSelect, column)
         c.moveToFirst()

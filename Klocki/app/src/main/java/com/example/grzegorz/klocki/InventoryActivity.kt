@@ -2,7 +2,9 @@ package com.example.grzegorz.klocki
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.example.grzegorz.klocki.DataBaseControllers.KlockiDBHandler
 import com.example.grzegorz.klocki.DataTypes.Inventory
 import kotlinx.android.synthetic.main.activity_inventory.*
@@ -25,6 +27,16 @@ class InventoryActivity : AppCompatActivity() {
 
         applyInventoryInfo()
         refreshList()
+    }
+
+    private fun showToastMessage(text : String){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    fun confirmButtonClick(v: View){
+        inventory!!.active = if (activeCheckBox.isChecked) 1 else 0
+        dbHandler!!.updateInventory(inventory!!)
+        showToastMessage("Zmiany zapisane!")
     }
 
     private fun applyInventoryInfo(){
