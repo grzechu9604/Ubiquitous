@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.grzegorz.klocki.DataBaseControllers.KlockiDBHandler
 import com.example.grzegorz.klocki.DataTypes.Inventory
+import com.example.grzegorz.klocki.adapters.InventoriesPartsAdapter
 import kotlinx.android.synthetic.main.activity_inventory.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -51,11 +52,7 @@ class InventoryActivity : AppCompatActivity() {
 
     private fun refreshList(){
         val items = arrayOfNulls<String>(inventory!!.parts!!.count())
-
-        for (i in 0 until inventory!!.parts!!.count()){
-            items[i] = inventory!!.parts!![i].getText()
-        }
-
-        inventoriesPartsListView.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
+        val adapter = InventoriesPartsAdapter(this, ArrayList(inventory!!.parts!!))
+        inventoriesPartsListView.adapter = adapter
     }
 }
