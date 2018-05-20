@@ -36,6 +36,11 @@ class InventoryActivity : AppCompatActivity() {
     fun confirmButtonClick(v: View){
         inventory!!.active = if (activeCheckBox.isChecked) 1 else 0
         dbHandler!!.updateInventory(inventory!!)
+
+        for (inventoriesPart in inventory!!.parts!!){
+            dbHandler!!.updateInventoryPart(inventoriesPart)
+        }
+
         showToastMessage("Zmiany zapisane!")
     }
 
