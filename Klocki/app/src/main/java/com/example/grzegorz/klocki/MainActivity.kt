@@ -13,6 +13,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import com.example.grzegorz.klocki.DataBaseControllers.KlockiDBHandler
 import com.example.grzegorz.klocki.DataTypes.Inventory
 import kotlinx.android.synthetic.main.content_main.*
@@ -51,6 +53,22 @@ class MainActivity : AppCompatActivity() {
     private fun refreshInventoriesList()
     {
         inventories = if (showOnlyUnarchivedInventories) db?.getUnarchivedInventories() else db?.getInventories()
+        showInventories()
+    }
+
+    private fun showInventories()
+    {
+        val items = arrayOfNulls<String>(inventories!!.count())
+
+        for (i in 0 until this!!.inventories!!.count()){
+            items[i] = inventories!![i].name
+        }
+
+        InventoriesListView.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
+    }
+
+    fun listClicked(v:View){
+        val selected = InventoriesListView.checkedItemPosition
     }
 
     fun onlyActiveCheckBoxClicked(v:View){
@@ -90,6 +108,10 @@ class MainActivity : AppCompatActivity() {
 
         db = KlockiDBHandler(this)
         refreshInventoriesList()
+
+        InventoriesListView.setOnItemClickListener{_,_,position, _ ->
+            val selected = inventories!![position]
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -110,4 +132,6 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+
 }
