@@ -45,6 +45,10 @@ class InventoryActivity : AppCompatActivity() {
         showToastMessage("Zmiany zapisane!")
     }
 
+    fun exportButtonClick(v:View){
+        inventory!!.Serizalize(dbHandler!!, this)
+    }
+
     private fun applyInventoryInfo(){
         nameTextView.text = inventory!!.name
         activeCheckBox.isChecked = inventory!!.active == 1
