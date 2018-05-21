@@ -200,7 +200,10 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     fun getPartByCode(code : String) : Part
     {
         val c = getByCode(code, TABLE_PARTS, PARTS_COLUMNS)
-        return Part(c)
+        if (c.moveToFirst())
+            return Part(c)
+        else
+            return Part()
     }
 
     fun getColorForColorable(colorable: Colorable) : Color

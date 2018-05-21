@@ -4,10 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Button
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import com.example.grzegorz.klocki.DataTypes.InventoriesPart
 import com.example.grzegorz.klocki.R
 
@@ -38,7 +35,7 @@ class InventoriesPartsAdapter(private val context: Context,
         val stringText = rowView!!.findViewById<TextView>(R.id.list_item_string)
         val incrementButton = rowView.findViewById<Button>(R.id.incrementCounter)
         val decrementButton = rowView.findViewById<Button>(R.id.decrementCounter)
-
+        val imageView = rowView!!.findViewById<ImageView>(R.id.imageView)
 
         stringText.text = dataSource[position].getText()
 
@@ -56,7 +53,8 @@ class InventoriesPartsAdapter(private val context: Context,
             notifyDataSetChanged()
         })
 
-        //dataSource[position].getImage()
+        val img = dataSource[position].getImage()?.second
+        imageView.setImageBitmap(img)
 
         return rowView
     }
