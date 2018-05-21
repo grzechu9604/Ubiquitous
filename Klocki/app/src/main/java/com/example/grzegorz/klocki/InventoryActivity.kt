@@ -47,6 +47,8 @@ class InventoryActivity : AppCompatActivity() {
 
     fun exportButtonClick(v:View){
         inventory!!.Serizalize(dbHandler!!, this)
+
+        showToastMessage("Wyeksportowano!")
     }
 
     private fun applyInventoryInfo(){

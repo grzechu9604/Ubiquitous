@@ -1,12 +1,18 @@
 package com.example.grzegorz.klocki.DataTypes
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.database.Cursor
+import android.os.Build
 import android.os.Environment
 import com.example.grzegorz.klocki.DataBaseControllers.KlockiDBHandler
 import org.simpleframework.xml.ElementList
 import org.simpleframework.xml.Root
 import java.io.File
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.TransformerFactory
@@ -36,6 +42,7 @@ class Inventory() {
 
     constructor(c : Cursor, parts : List<InventoriesPart>) : this(parts, c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3))
 
+    @SuppressLint("SimpleDateFormat")
     fun Serizalize(dbHandler: KlockiDBHandler, context: Context){
         val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         val doc = docBuilder.newDocument()
@@ -73,8 +80,11 @@ class Inventory() {
         transformer.setOutputProperty(OutputKeys.INDENT, "yes")
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2")
 
+        val sdf = SimpleDateFormat("dd-MM-yyyy-HH:mm:ss-")
+        val currentDate = sdf.format(Date())
+
         val outDir = Environment.getExternalStorageDirectory()
-        val file  = File(outDir, "tester.xml")
+        val file  = File(outDir, currentDate + "klocki.xml")
 
         transformer.transform(DOMSource(doc), StreamResult(file))
     }
