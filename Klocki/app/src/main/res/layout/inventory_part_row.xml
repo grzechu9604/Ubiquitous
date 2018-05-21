@@ -20,6 +20,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
+        android:maxWidth="15dp"
         android:text="+" />
 
     <Button
@@ -28,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/incrementCounter"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
+        android:maxWidth="15dp"
         android:text="-" />
 
 </RelativeLayout>

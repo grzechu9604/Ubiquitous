@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
+import android.widget.TableRow
 import android.widget.TextView
 import com.example.grzegorz.klocki.DataTypes.InventoriesPart
 import com.example.grzegorz.klocki.R
@@ -38,6 +39,7 @@ class InventoriesPartsAdapter(private val context: Context,
         val incrementButton = rowView.findViewById<Button>(R.id.incrementCounter)
         val decrementButton = rowView.findViewById<Button>(R.id.decrementCounter)
 
+
         stringText.text = dataSource[position].getText()
 
         incrementButton.setOnClickListener(View.OnClickListener {
@@ -53,6 +55,8 @@ class InventoriesPartsAdapter(private val context: Context,
 
             notifyDataSetChanged()
         })
+
+        //dataSource[position].getImage()
 
         return rowView
     }

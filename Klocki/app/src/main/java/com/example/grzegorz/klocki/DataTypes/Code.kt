@@ -1,7 +1,9 @@
 package com.example.grzegorz.klocki.DataTypes
 
 import android.database.Cursor
+import android.provider.Settings.Global.getString
 import com.example.grzegorz.klocki.Interfaces.Colorable
+import com.example.grzegorz.klocki.R
 
 class Code() : Colorable {
     constructor(id : Int, itemID : Int, colorID : Int, code : Int) : this()

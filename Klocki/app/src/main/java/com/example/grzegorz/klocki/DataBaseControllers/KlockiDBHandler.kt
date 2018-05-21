@@ -8,8 +8,9 @@ import android.database.sqlite.SQLiteQueryBuilder
 import com.example.grzegorz.klocki.DataTypes.*
 import com.example.grzegorz.klocki.Interfaces.Colorable
 import android.content.ContentValues
-
-
+import android.graphics.Bitmap
+import android.media.Image
+import java.io.ByteArrayOutputStream
 
 
 class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -81,7 +82,9 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     }
 
     private fun appendInventroiesPartToList(c: Cursor, parts: MutableList<InventoriesPart>) {
-        parts.add(InventoriesPart(c))
+        val p = InventoriesPart(c, this)
+        p.dbHandler = this
+        parts.add(p)
     }
 
     private fun createInventroiesPartToList(c: Cursor): List<InventoriesPart> {
@@ -171,7 +174,9 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     fun getInventoriesPart(id : Int) : InventoriesPart
     {
         val c = getById(id, TABLE_INVENTORIESPARTS, INVENTORIESPARTS_COLUMNS)
-        return InventoriesPart(c)
+        val part = InventoriesPart(c, this)
+        part.dbHandler = this
+        return part
     }
 
     fun getItemType(id : Int) : ItemType
@@ -282,4 +287,36 @@ class KlockiDBHandler(context : Context) : SQLiteAssetHelper(context, DATABASE_N
     {
         return writableDatabase.insert(tableName, null, contentValues).toInt()
     }
+
+    fun getImage(itemId : String, colorId : String) : Pair<String, ByteArray?>?{
+        val db = readableDatabase
+        val qb = SQLiteQueryBuilder()
+        qb.tables = TABLE_CODES
+        val selection = "$COLUMN_ITEM_ID = ? and $COLUMN_COLOR_ID = ?"
+        val selectionParams = arrayOf(itemId, colorId)
+        val c = qb.query(db, CODES_COLUMNS, selection, selectionParams, null, null, null)
+
+        if (c.moveToFirst()){
+            val code = c.getString(3)
+            val image = c.getBlob(4)
+
+            return  code to image
+        }
+
+        return null
+    }
+
+    fun updateImageByCode(code : String, image : Bitmap){
+        val selection = "$COLUMN_CODE = ? "
+        val cv = ContentValues()
+        cv.put(COLUMN_IMAGE, bitmapToBitmapArray(image))
+        writableDatabase.update(TABLE_CODES, cv, selection, arrayOf(code))
+    }
+
+    private fun bitmapToBitmapArray(b : Bitmap) : ByteArray{
+        val bos = ByteArrayOutputStream()
+        b.compress(Bitmap.CompressFormat.PNG, 100, bos)
+        return bos.toByteArray()
+    }
+
 }
